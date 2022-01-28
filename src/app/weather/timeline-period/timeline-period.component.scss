@@ -1,0 +1,17 @@
+:host {
+  padding: 1.4rem 0;
+  flex: 1 0 0;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.15);
+  font-size: 1.8rem;
+  text-align: center;
+
+  app-weather-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .hour {
+    margin-bottom: 1rem;
+  }
+}

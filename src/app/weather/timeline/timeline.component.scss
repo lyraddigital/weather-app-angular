@@ -1,0 +1,27 @@
+.weather-by-hour {
+  display: none;
+  margin-top: 1.6rem;
+
+  .heading {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.6rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+  }
+
+  .container {
+    display: flex;
+    column-gap: 1rem;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .weather-by-hour {
+    display: block;
+
+    .heading {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+  }
+}

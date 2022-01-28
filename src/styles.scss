@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  display: grid;
+  font-size: 1.6rem;
+  font-family: "Open Sans", sans-serif;
+  color: white;
+  position: relative;
+}
+
+a {
+  &:link,
+  &:hover,
+  &:visited,
+  &:active {
+    color: white;
+    text-decoration: none;
+  }
+
+  &:active,
+  &:hover,
+  &:active {
+    text-decoration: underline;
+  }
+}

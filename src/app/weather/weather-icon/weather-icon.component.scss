@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1.25;
+
+  .icon {
+    width: 16.8rem;
+  }
+}

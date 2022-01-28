@@ -1,0 +1,8 @@
+<ng-container *ngIf="true; else noWeather">
+  <app-current-weather></app-current-weather>
+  <app-timeline></app-timeline>
+</ng-container>
+
+<ng-template #noWeather>
+  <div class="no-weather-data">No weather data found..</div>
+</ng-template>
