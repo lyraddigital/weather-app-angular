@@ -1,24 +1,26 @@
-<div>
-  <div class="value">8&deg;</div>
-  <div class="label">High</div>
-</div>
-<div>
-  <div class="value">4&deg;</div>
-  <div class="label">Low</div>
-</div>
-<div>
-  <div class="value">3km/h</div>
-  <div class="label">Wind</div>
-</div>
-<div>
-  <div class="value">87%</div>
-  <div class="label">Rain</div>
-</div>
-<div>
-  <div class="value">7:44</div>
-  <div class="label">Sunrise</div>
-</div>
-<div>
-  <div class="value">16:41</div>
-  <div class="label">Sunset</div>
-</div>
+<ng-container *ngIf="statistics">
+  <div>
+    <div class="value">{{ statistics.highTemp }}&deg;</div>
+    <div class="label">High</div>
+  </div>
+  <div>
+    <div class="value">{{ statistics.lowTemp }}&deg;</div>
+    <div class="label">Low</div>
+  </div>
+  <div>
+    <div class="value">{{ statistics.windSpeed }}km/h</div>
+    <div class="label">Wind</div>
+  </div>
+  <div>
+    <div class="value">{{ statistics.rainPercentage }}%</div>
+    <div class="label">Rain</div>
+  </div>
+  <div>
+    <div class="value">{{ statistics.sunriseTime | date: "H:mm" }}</div>
+    <div class="label">Sunrise</div>
+  </div>
+  <div>
+    <div class="value">{{ statistics.sunsetTime | date: "H:mm" }}</div>
+    <div class="label">Sunset</div>
+  </div>
+</ng-container>

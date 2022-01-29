@@ -1,11 +1,14 @@
 <div class="header">
   <div>
     <h1 class="location">
-      <span>London</span>,
-      <span>United Kingdom</span>
+      <span>{{ location?.city }}</span
+      >,
+      <span>{{ location?.country }}</span>
     </h1>
-    <div>Friday 28th January</div>
-    <div>Last updated at <span>10:48 AM</span></div>
+    <div>{{ localTime | friendlyDate }}</div>
+    <div>
+      Last updated at <span>{{ localTime | date: "h:mm a" }}</span>
+    </div>
   </div>
   <div class="change-location">
     <a href="#">Change location</a>

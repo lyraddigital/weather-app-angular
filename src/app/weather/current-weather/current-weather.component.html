@@ -1,4 +1,7 @@
 <div id="current-weather">
-  <app-current-temperature></app-current-temperature>
-  <app-stats></app-stats>
+  <app-current-temperature
+    [temp]="temp"
+    [weatherId]="weatherId"
+  ></app-current-temperature>
+  <app-stats [statistics]="statistics"></app-stats>
 </div>

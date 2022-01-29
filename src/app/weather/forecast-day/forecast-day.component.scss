@@ -1,4 +1,4 @@
-:host {
+.day {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
@@ -39,7 +39,7 @@
 }
 
 @media screen and (min-width: 450px) {
-  :host {
+  .day {
     grid-template-rows: 1fr;
   }
 }

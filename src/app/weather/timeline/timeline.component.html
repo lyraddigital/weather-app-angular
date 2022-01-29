@@ -5,11 +5,9 @@
 <div class="weather-by-hour">
   <h2 class="heading">Today&apos;s weather</h2>
   <div class="container">
-    <app-timeline-period></app-timeline-period>
-    <app-timeline-period></app-timeline-period>
-    <app-timeline-period></app-timeline-period>
-    <app-timeline-period></app-timeline-period>
-    <app-timeline-period></app-timeline-period>
-    <app-timeline-period></app-timeline-period>
+    <app-timeline-period
+      *ngFor="let period of periods"
+      [period]="period"
+    ></app-timeline-period>
   </div>
 </div>

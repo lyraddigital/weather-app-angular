@@ -1,23 +1,27 @@
-<div class="date">
-  <div>Sun</div>
-  <div class="label">30/1</div>
-</div>
-<div class="icon">
-  <app-weather-icon></app-weather-icon>
-</div>
-<div class="low">
-  <div>19&deg;</div>
-  <div class="label">Low</div>
-</div>
-<div class="high">
-  <div>26&deg;</div>
-  <div class="label">High</div>
-</div>
-<div class="rain">
-  <div>71%</div>
-  <div class="label">Rain</div>
-</div>
-<div class="wind">
-  <div>4km/h</div>
-  <div class="label">Wind</div>
-</div>
+<ng-container *ngIf="day">
+  <div class="day">
+    <div class="date">
+      <div>{{ day.date | date: "EEE" }}</div>
+      <div class="label">{{ day.date | date: "dd/M" }}</div>
+    </div>
+    <div class="icon">
+      <app-weather-icon></app-weather-icon>
+    </div>
+    <div class="low">
+      <div>{{ day.lowTemp }}&deg;</div>
+      <div class="label">Low</div>
+    </div>
+    <div class="high">
+      <div>{{ day.highTemp }}&deg;</div>
+      <div class="label">High</div>
+    </div>
+    <div class="rain">
+      <div>{{ day.rainPercentage }}%</div>
+      <div class="label">Rain</div>
+    </div>
+    <div class="wind">
+      <div>{{ day.windSpeed }}km/h</div>
+      <div class="label">Wind</div>
+    </div>
+  </div>
+</ng-container>

@@ -1,8 +1,8 @@
 <h2 class="heading">Next 5 days</h2>
 <div class="container">
-  <app-forecast-day></app-forecast-day>
-  <app-forecast-day></app-forecast-day>
-  <app-forecast-day></app-forecast-day>
-  <app-forecast-day></app-forecast-day>
-  <app-forecast-day></app-forecast-day>
+  <app-forecast-day
+    *ngFor="let forecastDay of forecastDays"
+    [day]="forecastDay"
+  >
+  </app-forecast-day>
 </div>
