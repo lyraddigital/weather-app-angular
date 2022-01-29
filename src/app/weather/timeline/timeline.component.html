@@ -1,10 +1,6 @@
-<!-- const periodsEl = periods.map((p: WeatherTimelinePeriod, i: number) => (
-    <TimePeriod key={i} period={p} />
-  )); -->
-
 <div class="weather-by-hour">
   <h2 class="heading">Today&apos;s weather</h2>
-  <div class="container">
+  <div class="container" *ngIf="periods">
     <app-timeline-period
       *ngFor="let period of periods"
       [period]="period"

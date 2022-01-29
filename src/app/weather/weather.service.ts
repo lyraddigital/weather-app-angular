@@ -1,6 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { ForecastDay } from './models/forecast-day';
 import { Statistics } from './models/statistics';
+import { TimelinePeriod } from './models/timeline-period';
 
 @Injectable({
   providedIn: 'any',
@@ -14,6 +16,8 @@ export class WeatherService implements OnDestroy {
     temp: number;
     statistics: Statistics;
   }>();
+  private forecastDays$ = new ReplaySubject<Array<ForecastDay>>();
+  private periods$ = new ReplaySubject<Array<TimelinePeriod>>();
 
   private weatherData: {
     weatherId: number;
@@ -33,6 +37,82 @@ export class WeatherService implements OnDestroy {
     },
   };
 
+  private forecastDays: Array<ForecastDay> = [
+    {
+      date: new Date(),
+      weatherId: 40,
+      lowTemp: 19,
+      highTemp: 26,
+      rainPercentage: 71,
+      windSpeed: 4,
+    },
+    {
+      date: new Date(),
+      weatherId: 40,
+      lowTemp: 19,
+      highTemp: 26,
+      rainPercentage: 71,
+      windSpeed: 4,
+    },
+    {
+      date: new Date(),
+      weatherId: 40,
+      lowTemp: 19,
+      highTemp: 26,
+      rainPercentage: 71,
+      windSpeed: 4,
+    },
+    {
+      date: new Date(),
+      weatherId: 40,
+      lowTemp: 19,
+      highTemp: 26,
+      rainPercentage: 71,
+      windSpeed: 4,
+    },
+    {
+      date: new Date(),
+      weatherId: 40,
+      lowTemp: 19,
+      highTemp: 26,
+      rainPercentage: 71,
+      windSpeed: 4,
+    },
+  ];
+
+  private periods: Array<TimelinePeriod> = [
+    {
+      weatherId: 1,
+      temp: 3,
+      time: new Date(),
+    },
+    {
+      weatherId: 1,
+      temp: 3,
+      time: new Date(),
+    },
+    {
+      weatherId: 1,
+      temp: 3,
+      time: new Date(),
+    },
+    {
+      weatherId: 1,
+      temp: 3,
+      time: new Date(),
+    },
+    {
+      weatherId: 1,
+      temp: 3,
+      time: new Date(),
+    },
+    {
+      weatherId: 1,
+      temp: 3,
+      time: new Date(),
+    },
+  ];
+
   constructor() {
     this.isLoading$.next(true);
 
@@ -41,6 +121,8 @@ export class WeatherService implements OnDestroy {
       this.localTime$.next(new Date());
       this.hasWeatherData$.next(true);
       this.currentWeatherData$.next(this.weatherData);
+      this.forecastDays$.next(this.forecastDays);
+      this.periods$.next(this.periods);
 
       setInterval(() => {
         this.isLoading$.next(true);
@@ -50,6 +132,8 @@ export class WeatherService implements OnDestroy {
           this.localTime$.next(new Date());
           this.hasWeatherData$.next(true);
           this.currentWeatherData$.next(this.weatherData);
+          this.forecastDays$.next(this.forecastDays);
+          this.periods$.next(this.periods);
         }, 5000);
       }, 30000);
     }, 5000);
@@ -73,6 +157,14 @@ export class WeatherService implements OnDestroy {
 
   public onLocalTimeChanged(): Observable<Date | undefined> {
     return this.localTime$;
+  }
+
+  public onForecastDaysChanged(): Observable<Array<ForecastDay>> {
+    return this.forecastDays$.asObservable();
+  }
+
+  public onTimelinePeriodsChanged(): Observable<Array<TimelinePeriod>> {
+    return this.periods$.asObservable();
   }
 
   ngOnDestroy(): void {
