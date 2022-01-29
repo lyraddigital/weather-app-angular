@@ -3,8 +3,12 @@
   margin-top: 1.6rem;
   width: 100%;
 
-  app-weather-icon {
-    flex-basis: 16.8rem;
+  #current-weather-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 60%;
+    padding: 0 8%;
   }
 
   .content-container {
