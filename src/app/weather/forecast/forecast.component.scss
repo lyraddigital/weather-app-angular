@@ -1,0 +1,18 @@
+:host {
+  margin-top: 1.6rem;
+
+  .heading {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    font-weight: normal;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  :host {
+    .heading {
+      font-size: 1.8rem;
+    }
+  }
+}

@@ -3,6 +3,10 @@
   margin-top: 1.6rem;
   width: 100%;
 
+  app-weather-icon {
+    flex-basis: 16.8rem;
+  }
+
   .content-container {
     display: flex;
     flex-direction: column;

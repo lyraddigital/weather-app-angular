@@ -11,6 +11,8 @@ import { StatsComponent } from './stats/stats.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { TimelinePeriodComponent } from './timeline-period/timeline-period.component';
 import { WeatherIconComponent } from './weather-icon/weather-icon.component';
+import { ForecastComponent } from './forecast/forecast.component';
+import { ForecastDayComponent } from './forecast-day/forecast-day.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { WeatherIconComponent } from './weather-icon/weather-icon.component';
     TimelineComponent,
     TimelinePeriodComponent,
     WeatherIconComponent,
+    ForecastComponent,
+    ForecastDayComponent,
   ],
   imports: [CommonModule, WeatherRoutingModule],
 })
