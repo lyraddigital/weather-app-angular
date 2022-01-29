@@ -1,6 +1,12 @@
 <div class="layout-container">
   <div class="inner-container">
-    <app-weather-header></app-weather-header>
-    <app-weather-content></app-weather-content>
+    <ng-container *ngIf="!firstLoad; else loader">
+      <app-loader *ngIf="isLoading"></app-loader>
+      <app-weather-header></app-weather-header>
+      <app-weather-content></app-weather-content>
+    </ng-container>
+    <ng-template #loader>
+      <app-loader></app-loader>
+    </ng-template>
   </div>
 </div>

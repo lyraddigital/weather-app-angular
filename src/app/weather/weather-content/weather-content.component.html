@@ -1,4 +1,4 @@
-<ng-container *ngIf="true; else noWeather">
+<ng-container *ngIf="hasWeatherData; else noWeather">
   <app-current-weather></app-current-weather>
   <app-timeline></app-timeline>
   <app-forecast></app-forecast>

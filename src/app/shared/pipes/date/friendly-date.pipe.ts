@@ -3,7 +3,11 @@ import { formatDate } from '@angular/common';
 
 @Pipe({ name: 'friendlyDate' })
 export class FriendlyDatePipe implements PipeTransform {
-  public transform(date: Date): string {
+  public transform(date?: Date): string {
+    if (!date) {
+      return '';
+    }
+
     const day = date.getDate();
     const dayName = formatDate(date, 'EEEE', 'en-AU');
     const monthName = formatDate(date, 'LLLL', 'en-AU');
