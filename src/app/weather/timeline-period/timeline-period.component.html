@@ -1,5 +1,5 @@
 <ng-container *ngIf="period">
   <div class="hour">{{ period?.time | date: "ha" }}</div>
   <app-weather-icon></app-weather-icon>
-  <div class="degree">7&deg;</div>
+  <div class="degree">{{ period.temp }}&deg;</div>
 </ng-container>

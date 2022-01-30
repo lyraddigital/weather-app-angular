@@ -1,0 +1,5 @@
+export class InjectionTokens {
+  public static WEATHER_API_KEY = 'WEATHER_API_KEY';
+  public static WEATHER_UPDATE_FREQUENCY_IN_MILLISECONDS =
+    'WEATHER_UPDATE_FREQUENCY_IN_MILLISECONDS';
+}

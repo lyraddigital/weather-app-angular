@@ -21,7 +21,7 @@ export class WeatherPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((isLoading) => {
         this.isLoading = isLoading;
-        this.firstLoad = false;
+        this.firstLoad = isLoading && this.firstLoad;
       });
   }
 
