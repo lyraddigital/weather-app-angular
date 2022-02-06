@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { WeatherIconService } from '../weather-icon.service';
 
 @Component({
   selector: 'app-weather-icon',
   templateUrl: './weather-icon.component.html',
-  styleUrls: ['./weather-icon.component.scss']
+  styleUrls: ['./weather-icon.component.scss'],
 })
-export class WeatherIconComponent implements OnInit {
+export class WeatherIconComponent {
+  @Input() weatherId?: number;
+  @Input() isNightTime?: boolean;
 
-  constructor() { }
+  constructor(private readonly weatherIconService: WeatherIconService) {}
 
-  ngOnInit(): void {
+  weatherIconUrl(): string {
+    return this.weatherIconService.getWeatherIconUrl(
+      this.weatherId,
+      this.isNightTime
+    );
   }
-
 }

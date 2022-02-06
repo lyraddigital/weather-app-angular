@@ -5,7 +5,7 @@
       <div class="label">{{ day.date | date: "dd/M" }}</div>
     </div>
     <div class="icon">
-      <app-weather-icon></app-weather-icon>
+      <app-weather-icon [weatherId]="day.weatherId"></app-weather-icon>
     </div>
     <div class="low">
       <div>{{ day.lowTemp }}&deg;</div>

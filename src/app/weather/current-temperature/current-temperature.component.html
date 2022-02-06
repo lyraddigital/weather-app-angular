@@ -1,7 +1,7 @@
 <div id="current-weather-icon-container">
-  <app-weather-icon></app-weather-icon>
+  <app-weather-icon [weatherId]="weatherId"></app-weather-icon>
 </div>
 <div class="content-container">
   <div class="value">{{ temp }}&deg;</div>
-  <div className="summary">Overcast</div>
+  <div className="summary">{{ getCurrentWeatherDescription() }}</div>
 </div>

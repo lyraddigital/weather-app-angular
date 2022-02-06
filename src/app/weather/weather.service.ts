@@ -1,13 +1,14 @@
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, ReplaySubject, Subject, timer } from 'rxjs';
+import { Observable, of, ReplaySubject, Subject, timer } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
+import { UtilityService } from '../core/utility.service';
 import { ForecastDay } from './models/forecast-day';
 import { InjectionTokens } from './models/injection-tokens';
-import { Statistics } from './models/statistics';
 import { TimelinePeriod } from './models/timeline-period';
 import { Constants } from './models/constants';
-import { switchMap, tap } from 'rxjs/operators';
+import { CurrentWeather } from './models/current-weather';
 import {
   DailyForecastApiResponse,
   TimelinePeriodApiResponse,
@@ -21,11 +22,7 @@ export class WeatherService implements OnDestroy {
   private isLoading$ = new Subject<boolean>();
   private localTime$ = new ReplaySubject<Date | undefined>();
   private hasWeatherData$ = new ReplaySubject<boolean>();
-  private currentWeatherData$ = new ReplaySubject<{
-    weatherId: number;
-    temp: number;
-    statistics: Statistics;
-  }>();
+  private currentWeatherData$ = new ReplaySubject<CurrentWeather>();
   private forecastDays$ = new ReplaySubject<Array<ForecastDay>>();
   private periods$ = new ReplaySubject<Array<TimelinePeriod>>();
   private currentLatitude = -37.8136276;
@@ -36,7 +33,8 @@ export class WeatherService implements OnDestroy {
     private readonly weatherApiKey: string,
     @Inject(InjectionTokens.WEATHER_UPDATE_FREQUENCY_IN_MILLISECONDS)
     private readonly weatherUpdateFrequencyInMilliseconds: number,
-    private readonly httpClient: HttpClient
+    private readonly httpClient: HttpClient,
+    private readonly utilityService: UtilityService
   ) {
     timer(0, this.weatherUpdateFrequencyInMilliseconds)
       .pipe(
@@ -47,19 +45,20 @@ export class WeatherService implements OnDestroy {
           return this.httpClient.get<WeatherApiResponse>(
             `${Constants.WEATHER_API_URL}?lat=${this.currentLatitude}&lon=${this.currentLongitude}&appid=${this.weatherApiKey}&units=metric`
           );
+        }),
+        catchError(() => {
+          return of(undefined);
         })
       )
-      .subscribe((response) => {
-        this.publishNewWeatherData(response);
-        this.isLoading$.next(false);
+      .subscribe({
+        next: (response) => {
+          this.publishNewWeatherData(response);
+          this.isLoading$.next(false);
+        },
       });
   }
 
-  public onCurrentWeather(): Observable<{
-    weatherId: number;
-    temp: number;
-    statistics: Statistics;
-  }> {
+  public onCurrentWeather(): Observable<CurrentWeather> {
     return this.currentWeatherData$.asObservable();
   }
 
@@ -83,38 +82,52 @@ export class WeatherService implements OnDestroy {
     return this.periods$.asObservable();
   }
 
-  private publishNewWeatherData(response: WeatherApiResponse) {
+  private publishNewWeatherData(response?: WeatherApiResponse) {
+    const weatherId =
+      response?.current?.weather && response?.current?.weather.length > 0
+        ? response?.current?.weather[0].id
+        : 0;
     const localTimeInEpochSeconds = response?.current?.dt || 0;
-    const localTime = new Date(localTimeInEpochSeconds * 1000);
+    const localTime = this.utilityService.convertEpochSecondsToDate(
+      localTimeInEpochSeconds
+    );
     const sunriseTimeInEpochSeconds = response?.current?.sunrise || 0;
-    const sunriseTime = new Date(sunriseTimeInEpochSeconds * 1000);
+    const sunriseTime = this.utilityService.convertEpochSecondsToDate(
+      sunriseTimeInEpochSeconds
+    );
     const sunsetTimeInEpochSeconds = response?.current?.sunset || 0;
-    const sunsetTime = new Date(sunsetTimeInEpochSeconds * 1000);
+    const sunsetTime = this.utilityService.convertEpochSecondsToDate(
+      sunsetTimeInEpochSeconds
+    );
     const dailyTemperatures =
       response?.daily && response.daily.length > 0
         ? response.daily[0]?.temp
         : undefined;
     const weatherData = {
-      weatherId: 1,
-      temp: this.roundNumberOrZero(response?.current?.temp) || 0,
+      weatherId,
+      temp: this.utilityService.roundNumberOrZero(response?.current?.temp) || 0,
       statistics: {
         sunriseTime: sunriseTime,
         sunsetTime: sunsetTime,
-        highTemp: this.roundNumberOrZero(dailyTemperatures?.max),
-        lowTemp: this.roundNumberOrZero(dailyTemperatures?.min),
-        windSpeed: this.roundNumberOrZero(response?.current?.wind_speed),
-        rainPercentage: this.roundNumberOrZero(response?.current?.humidity),
+        highTemp: this.utilityService.roundNumberOrZero(dailyTemperatures?.max),
+        lowTemp: this.utilityService.roundNumberOrZero(dailyTemperatures?.min),
+        windSpeed: this.utilityService.roundNumberOrZero(
+          response?.current?.wind_speed
+        ),
+        rainPercentage: this.utilityService.roundNumberOrZero(
+          response?.current?.humidity
+        ),
       },
     };
     const forecastDays = (response?.daily || [])
       .map((d?: DailyForecastApiResponse) => ({
-        date: new Date((d?.dt || 0) * 1000),
+        date: this.utilityService.convertEpochSecondsToDate(d?.dt),
         weatherId:
           d?.weather && d.weather.length > 0 ? d.weather[0]?.id || 0 : 0,
-        lowTemp: this.roundNumberOrZero(d?.temp?.min),
-        highTemp: this.roundNumberOrZero(d?.temp?.max),
-        rainPercentage: this.roundNumberOrZero(d?.humidity),
-        windSpeed: this.roundNumberOrZero(d?.wind_speed),
+        lowTemp: this.utilityService.roundNumberOrZero(d?.temp?.min),
+        highTemp: this.utilityService.roundNumberOrZero(d?.temp?.max),
+        rainPercentage: this.utilityService.roundNumberOrZero(d?.humidity),
+        windSpeed: this.utilityService.roundNumberOrZero(d?.wind_speed),
       }))
       .slice(1, 6);
 
@@ -122,8 +135,8 @@ export class WeatherService implements OnDestroy {
       .map((h?: TimelinePeriodApiResponse) => ({
         weatherId:
           h?.weather && h.weather.length > 0 ? h.weather[0]?.id || 0 : 0,
-        temp: this.roundNumberOrZero(h?.temp),
-        time: new Date((h?.dt || 0) * 1000),
+        temp: this.utilityService.roundNumberOrZero(h?.temp),
+        time: this.utilityService.convertEpochSecondsToDate(h?.dt),
       }))
       .filter((_: TimelinePeriod, i: number) => i % 3 === 0)
       .slice(1, 7);
@@ -133,14 +146,6 @@ export class WeatherService implements OnDestroy {
     this.currentWeatherData$.next(weatherData);
     this.forecastDays$.next(forecastDays);
     this.periods$.next(periods);
-  }
-
-  private roundNumberOrZero(value: number | undefined): number {
-    return Math.round(this.zeroIfUndefined(value));
-  }
-
-  private zeroIfUndefined(value?: number): number {
-    return value || 0;
   }
 
   ngOnDestroy(): void {
